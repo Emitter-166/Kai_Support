@@ -32,9 +32,12 @@ public class closeAndLogs extends ListenerAdapter {
 
                     //logs
 
+                    try{
+                        File file = new File(String.format("%s.txt", e.getChannel().getName()));
+                        e.getGuild().getTextChannelById("980322609822576640").sendFile(file).queue();
 
-                    File file = new File(String.format("%s.txt", e.getChannel().getName()));
-                    e.getGuild().getTextChannelById("980322609822576640").sendFile(file).queue();
+                    }catch (IllegalArgumentException exception){}
+
 
 
                     StringBuilder reply = new StringBuilder();
@@ -49,7 +52,7 @@ public class closeAndLogs extends ListenerAdapter {
                                 .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage("**Support ticket closed**")).queue();
                     }
 
-                    e.getChannel().delete().queue();
+//                    e.getChannel().delete().queue();
 
                     //here should be the logging system
                 }else{
