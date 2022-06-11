@@ -7,7 +7,11 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -105,6 +109,25 @@ JDA jda = null;
             TextChannel channel = guild.getTextChannelsByName(ChannelName, true).get(0);
             channel.sendMessage("@here").queue();
             channel.sendMessageEmbeds(aboutBuilder.build()).queue();
+
+            //mod log file
+            FileWriter log;
+            try {
+                log = new FileWriter(String.format("%s.txt", ChannelName.toLowerCase()));
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
+
+            try {
+                StringBuilder timeAndDate = new StringBuilder();
+                String date = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[0];
+                String Time = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[1];
+
+                log.write(String.format("User: %s(%s), Date: %s, Time created: %s UTC", author.getName() + "#" + author.getDiscriminator(), author.getId(), date, Time));
+                log.close(); 
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
+            }
 
         }
 

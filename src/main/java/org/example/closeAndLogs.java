@@ -1,14 +1,24 @@
 package org.example;
 
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.io.File;
+import java.io.FileReader;
+
 public class closeAndLogs extends ListenerAdapter {
+
+
     public void onMessageReceived(MessageReceivedEvent e){
         User author = e.getAuthor();
         if(author.isBot()) return;
-        if(author.equals(e.getGuild().getSelfMember().getUser())) return;
+        try{
+            if(author.equals(e.getGuild().getSelfMember().getUser())) return;
+        }catch(IllegalStateException exception){}
+
         String args[] = e.getMessage().getContentRaw().split(" ");
         if(args[0].equalsIgnoreCase("?close")){
             try{
@@ -19,6 +29,13 @@ public class closeAndLogs extends ListenerAdapter {
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
                     }
+
+                    //logs
+
+
+                    File file = new File(String.format("%s.txt", e.getChannel().getName()));
+                    e.getGuild().getTextChannelById("980322609822576640").sendFile(file).queue();
+
 
                     StringBuilder reply = new StringBuilder();
                     for(int i = 1; i < args.length ; i++){

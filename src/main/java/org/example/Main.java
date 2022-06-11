@@ -16,12 +16,11 @@ public class Main {
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .addEventListeners(new Database())
-                .addEventListeners(new closeAndLogs())
                 .addEventListeners(new reply())
                 .build();
 
                 jda.addEventListener(new onDM(jda));
-
+                jda.addEventListener(new closeAndLogs());
 
     }
 }
