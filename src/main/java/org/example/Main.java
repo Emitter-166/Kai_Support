@@ -14,8 +14,9 @@ public class Main {
          JDA jda = JDABuilder.createLight(System.getenv("token"))
                 .setActivity(Activity.listening("Kai support"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                .addEventListeners(new Database())
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
+                .addEventListeners(new Database())
+                .addEventListeners(new closeAndLogs())
                 .build();
 
                 jda.addEventListener(new onDM(jda));

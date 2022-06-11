@@ -24,8 +24,10 @@ JDA jda = null;
     @Override
     public void onMessageReceived(MessageReceivedEvent e){
         guild = jda.getGuildById("818373020816637952");
+
         if(e.getChannel().getType() != ChannelType.PRIVATE) return;
         if(e.getMessage().getAuthor().isBot()) return;
+
         //checking if the user has pervious thread
         User author = e.getMessage().getAuthor();
         Category modMailCategory = guild.getCategoryById("961736325076250704");
@@ -43,6 +45,7 @@ JDA jda = null;
             System.out.println(ChannelName);
             modMailCategory.createTextChannel(ChannelName)
                     .clearPermissionOverrides()
+                    .setTopic("Kai Support Modmail")
                     .queue();
             try {
                 Thread.sleep(1500);
@@ -64,9 +67,10 @@ JDA jda = null;
 
             Database.adduser(author.getId());
             Object timeJoined;
+            Member member = guild.retrieveMember(author).complete();
             try{
-                System.out.println(guild.getName());
-                timeJoined = guild.getMemberById(author.getId()).getTimeJoined();
+                System.out.println(author.getId());
+                timeJoined = member.getTimeJoined();
 
             }catch(NullPointerException exception){
                 timeJoined = "owner of this server";
@@ -78,15 +82,21 @@ JDA jda = null;
             aboutBuilder.setColor(Color.WHITE);
 
             try{
-                aboutBuilder.addField("", String.format("%s was created %s days ago, joined at %s with &d past threads.", author.getAsMention(),
-                        author.getTimeCreated().getDayOfMonth() + "/" + ((OffsetDateTime)timeJoined).getMonth().toString() + "/" + ((OffsetDateTime)timeJoined).getYear(),
-                        ((OffsetDateTime)timeJoined).getDayOfMonth() + "/" + ((OffsetDateTime)timeJoined).getMonth().toString() + "/" + ((OffsetDateTime)timeJoined).getYear(), Database.amountOfPastThread(author.getId())) , true);
-            }catch(Exception exception){
+                assert timeJoined instanceof OffsetDateTime;
+                aboutBuilder.addField("", String.format("%s was created at **%s**, joined at **%s** with **%d** past threads.", author.getAsMention(),
+                        author.getTimeCreated().getDayOfMonth() + "/" + author.getTimeCreated().getMonthValue()+ "/" + ((OffsetDateTime)timeJoined).getYear(),
+                        ((OffsetDateTime)timeJoined).getDayOfMonth() + "/" + ((OffsetDateTime)timeJoined).getMonthValue() + "/" + ((OffsetDateTime)timeJoined).getYear(),
+                        Database.amountOfPastThread(author.getId())) , true);
+
+            }catch(ClassCastException exception){
                 aboutBuilder.addField("", (String) timeJoined, false);
                 exception.printStackTrace();
             }
 
-            aboutBuilder.addField("Roles", "", false);
+            StringBuilder roles = new StringBuilder();
+            member.getRoles().forEach(role -> roles.append(role.getAsMention()));
+
+            aboutBuilder.addField("Roles", roles.toString(), false);
             aboutBuilder.setFooter("User ID: " + author.getId() + " • " + "DM ID: " + e.getChannel().getId() +
                     " • " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
 

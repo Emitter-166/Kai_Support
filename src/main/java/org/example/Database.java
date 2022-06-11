@@ -35,7 +35,7 @@ public class Database extends ListenerAdapter {
     log no.
 
     logs will have:
-
+    channel name
     Messages sent and receive with the time
      */
 
