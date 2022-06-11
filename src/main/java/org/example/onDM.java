@@ -58,9 +58,9 @@ JDA jda = null;
 
             Calendar calendar = new GregorianCalendar();
 
-            DMbuilder.setTitle("Ticket open!");
+            DMbuilder.setTitle("Ticket opened!");
             DMbuilder.setColor(Color.CYAN);
-            DMbuilder.setDescription("Ticket open! we will get back to you asap!");
+            DMbuilder.setDescription("Ticket opened! we will get back to you asap!");
             DMbuilder.setThumbnail(e.getAuthor().getEffectiveAvatarUrl());
             DMbuilder.setFooter("Message ID: " + e.getMessage().getId() + " • " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
             e.getChannel().sendMessageEmbeds(DMbuilder.build()).queue();

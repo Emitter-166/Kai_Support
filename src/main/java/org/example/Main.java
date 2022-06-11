@@ -17,6 +17,7 @@ public class Main {
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .addEventListeners(new Database())
                 .addEventListeners(new closeAndLogs())
+                .addEventListeners(new reply())
                 .build();
 
                 jda.addEventListener(new onDM(jda));
