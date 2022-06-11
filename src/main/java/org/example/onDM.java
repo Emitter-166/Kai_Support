@@ -110,7 +110,6 @@ JDA jda = null;
 
 
         //this is the part where the message from client will be redirected to mods
-        System.out.println(ChannelName);
         TextChannel channel = guild.getTextChannelsByName(ChannelName, true).get(0);
 
         EmbedBuilder builder = new EmbedBuilder();
@@ -124,7 +123,10 @@ JDA jda = null;
 
 
         channel.sendMessageEmbeds(builder.build()).queue();
+        e.getMessage().getAttachments().forEach(attachment -> channel.sendMessage(attachment.getUrl()).queue());
+
         e.getChannel().sendMessageEmbeds(builder.build()).queue();
+        e.getMessage().getAttachments().forEach(attachment -> e.getChannel().sendMessage(attachment.getUrl()).queue());
 
 
 

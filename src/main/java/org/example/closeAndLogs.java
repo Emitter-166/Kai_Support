@@ -9,9 +9,8 @@ public class closeAndLogs extends ListenerAdapter {
         User author = e.getAuthor();
         if(author.isBot()) return;
         if(author.equals(e.getGuild().getSelfMember().getUser())) return;
-
-        if(e.getMessage().getContentRaw().equalsIgnoreCase("?close")){
-
+        String args[] = e.getMessage().getContentRaw().split(" ");
+        if(args[0].equalsIgnoreCase("?close")){
             try{
                 if(e.getTextChannel().getTopic().equalsIgnoreCase("Kai Support Modmail")){
                     e.getChannel().sendMessage("**Closing modmail....**").queue();
@@ -19,6 +18,18 @@ public class closeAndLogs extends ListenerAdapter {
                         Thread.sleep(250);
                     } catch (InterruptedException ex) {
                         throw new RuntimeException(ex);
+                    }
+
+                    StringBuilder reply = new StringBuilder();
+                    for(int i = 1; i < args.length ; i++){
+                        reply.append(args[i] + " ");
+                    }
+                    if(args.length != 1) {
+                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split(" ").length + 1])
+                                .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(String.format("**Support ticket closed with the reason: %s .**", reply))).queue();
+                    }else{
+                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split(" ").length + 1])
+                                .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage("**Support ticket closed**")).queue();
                     }
 
                     e.getChannel().delete().queue();
