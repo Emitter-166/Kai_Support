@@ -11,7 +11,7 @@ import javax.security.auth.login.LoginException;
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-         JDA jda = JDABuilder.createLight("OTc2MTQyNzA1Nzg2NzgxNzk2.Gec_K4.Yi-8lkTWljMqHIMQFfYjBGNWHHKVdLNHG-mVyY")
+         JDA jda = JDABuilder.createLight(System.getenv("token"))
                 .setActivity(Activity.playing("DM FOR HELP"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
