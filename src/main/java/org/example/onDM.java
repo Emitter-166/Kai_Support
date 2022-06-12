@@ -155,10 +155,16 @@ JDA jda = null;
             StringBuilder embedUrls = new StringBuilder();
             e.getMessage().getEmbeds().forEach(messageEmbed -> embedUrls.append(messageEmbed.getUrl() + " "));
 
-            log = new FileWriter(String.format("%s.txt", ChannelName));
-            log.write("\n");
-            log.write(String.format("User: %s => %s (Time: %s , Date: %s)", author.getName(), e.getMessage().getContentRaw() + embedUrls, Time, date));
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
+            }
+            log = new FileWriter(String.format("%s.txt", ChannelName), true);
+            log.append("\n");
+            log.append(String.format("User: %s => %s (Time: %s(UTC) , Date: %s)", author.getName(), e.getMessage().getContentRaw() + embedUrls, Time, date));
             log.close();
+
 
 
         } catch (IOException ex) {

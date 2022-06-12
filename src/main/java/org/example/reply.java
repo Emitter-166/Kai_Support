@@ -7,10 +7,12 @@ import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
 import java.awt.*;
+import java.io.FileWriter;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class reply extends ListenerAdapter {
+    FileWriter log = null;
     public void onMessageReceived(MessageReceivedEvent e) throws IllegalStateException{
         User author = e.getAuthor();
         if(author.isBot()) return;
@@ -56,6 +58,20 @@ public class reply extends ListenerAdapter {
 
                        e.getChannel().sendMessageEmbeds(replyChannelEmbed.build()).queue();
                        e.getMessage().getAttachments().forEach(attachment -> e.getChannel().sendMessage(attachment.getUrl()).queue());
+
+
+
+                       //logs
+                       String Time = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[1];
+                       String date = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[0];
+
+                       StringBuilder embedUrls = new StringBuilder();
+                       e.getMessage().getAttachments().forEach(messageEmbed -> embedUrls.append(messageEmbed.getUrl() + " "));
+
+                       log = new FileWriter(String.format("%s.txt", e.getTextChannel().getName()), true);
+                       log.append("\n");
+                       log.append(String.format("Moderator: %s => %s (Time: %s(UTC) , Date: %s)", author.getName(), reply.toString() + embedUrls, Time, date));
+                       log.close();
 
 
                    }
