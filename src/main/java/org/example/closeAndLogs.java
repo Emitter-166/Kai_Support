@@ -29,7 +29,9 @@ public class closeAndLogs extends ListenerAdapter {
                 if(e.getTextChannel().getTopic().equalsIgnoreCase("Kai Support Modmail")){
                    try{
                        e.getChannel().sendMessage("**Closing modmail....**").queue();
-                   }catch (Exception exception){}
+                   }catch (Exception exception){
+                       exception.printStackTrace();
+                   }
 
                     try {
                         Thread.sleep(250);
@@ -103,10 +105,10 @@ public class closeAndLogs extends ListenerAdapter {
 
 
                     if(args.length != 1) {
-                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split(" ").length + 1])
+                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split("-").length - 1])
                                 .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(String.format("**Support ticket closed with the reason: %s .**", reply))).queue();
                     }else{
-                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split(" ").length + 1])
+                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split("-").length - 1])
                                 .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage("**Support ticket closed**")).queue();
                     }
 

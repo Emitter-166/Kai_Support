@@ -39,7 +39,7 @@ public class reply extends ListenerAdapter {
                        replyEmbed.setFooter("Message ID: " + e.getMessage().getId() + " • " + calendar.get(Calendar.DAY_OF_MONTH) + "/" + calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR));
                        e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split("-").length - 1])
                                .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessageEmbeds(replyEmbed.build())).queue();
-                       e.getMessage().getAttachments().forEach(attachment -> e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split(" ").length + 1])
+                       e.getMessage().getAttachments().forEach(attachment -> e.getGuild().retrieveMemberById(e.getTextChannel().getName().split("-")[e.getTextChannel().getName().split("-").length + 1])
                                .complete().getUser().openPrivateChannel().flatMap(privateChannel -> privateChannel.sendMessage(attachment.getUrl())).queue());
 
 
