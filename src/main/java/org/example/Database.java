@@ -16,7 +16,6 @@ public class Database extends ListenerAdapter {
 
     @Override
     public void onReady(ReadyEvent e){
-        System.out.println("ready");
         MongoClientURI clientURI = new MongoClientURI(System.getenv("uri"));
         MongoClient mongoClient = new MongoClient(clientURI);
         MongoDatabase database = mongoClient.getDatabase("ModMail");

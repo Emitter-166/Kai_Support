@@ -88,7 +88,7 @@ public class closeAndLogs extends ListenerAdapter {
                     ticketClose.setColor(Color.RED);
                     ticketClose.setAuthor(author.getName() + " closed a ticket", author.getEffectiveAvatarUrl());
 
-                    e.getGuild().getTextChannelById("985454543980621824").sendMessageEmbeds(ticketClose.build()).queue(); //put logs channel here
+                    e.getGuild().getTextChannelById("984355710668243014").sendMessageEmbeds(ticketClose.build()).queue(); //put logs channel here
 
 
                     Thread.sleep(500);
