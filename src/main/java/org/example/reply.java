@@ -2,6 +2,7 @@ package org.example;
 
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.Permission;
+import net.dv8tion.jda.api.entities.ChannelType;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
@@ -15,9 +16,13 @@ public class reply extends ListenerAdapter {
     FileWriter log = null;
     public void onMessageReceived(MessageReceivedEvent e) throws IllegalStateException{
         User author = e.getAuthor();
+        if((e.getChannel().getType().equals(ChannelType.PRIVATE))) return;
         if(author.isBot()) return;
         if(author.equals(e.getGuild().getSelfMember().getUser())) return;
-        if(e.getTextChannel().getTopic().equalsIgnoreCase("Kai Support Modmail"));
+
+        try{
+            if(e.getTextChannel().getTopic().equalsIgnoreCase("Kai Support Modmail"));
+        }catch (NullPointerException exception){}
 
        try{
            if(e.getTextChannel().getTopic().equalsIgnoreCase("Kai Support Modmail")){
