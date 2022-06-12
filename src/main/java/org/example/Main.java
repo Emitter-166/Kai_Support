@@ -11,15 +11,16 @@ import javax.security.auth.login.LoginException;
 public class Main {
 
     public static void main(String[] args) throws LoginException, InterruptedException {
-         JDA jda = JDABuilder.createLight(System.getenv("token"))
-                .setActivity(Activity.listening("Kai support"))
+         JDA jda = JDABuilder.createLight("OTc2MTQyNzA1Nzg2NzgxNzk2.Gec_K4.Yi-8lkTWljMqHIMQFfYjBGNWHHKVdLNHG-mVyY")
+                .setActivity(Activity.playing("DM FOR HELP"))
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .addEventListeners(new Database())
-                .addEventListeners(new reply()).build();
-
+                .addEventListeners(new reply())
+                .build();
+                jda.awaitReady();
                 jda.addEventListener(new onDM(jda));
                 jda.addEventListener(new closeAndLogs());
-                jda.awaitReady();
+
     }
 }

@@ -17,7 +17,7 @@ public class Database extends ListenerAdapter {
     @Override
     public void onReady(ReadyEvent e){
         System.out.println("ready");
-        MongoClientURI clientURI = new MongoClientURI("mongodb+srv://Emitter:the2horned@cluster0.o4mfx.mongodb.net/?retryWrites=true&w=majority");
+        MongoClientURI clientURI = new MongoClientURI(System.getenv("uri"));
         MongoClient mongoClient = new MongoClient(clientURI);
         MongoDatabase database = mongoClient.getDatabase("ModMail");
         activeThreads = database.getCollection("Active-Threads");

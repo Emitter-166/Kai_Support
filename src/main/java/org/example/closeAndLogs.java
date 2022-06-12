@@ -11,7 +11,7 @@ import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
+
 
 public class closeAndLogs extends ListenerAdapter {
 
@@ -70,7 +70,7 @@ public class closeAndLogs extends ListenerAdapter {
 
                     //sending the logfile
                     File file = new File(path);
-                    e.getGuild().getTextChannelById("985454543980621824").sendFile(file)
+                    e.getGuild().getTextChannelById("984355710668243014").sendFile(file) //put logs channel here
                             .queue();
 
 
@@ -88,7 +88,7 @@ public class closeAndLogs extends ListenerAdapter {
                     ticketClose.setColor(Color.RED);
                     ticketClose.setAuthor(author.getName() + " closed a ticket", author.getEffectiveAvatarUrl());
 
-                    e.getGuild().getTextChannelById("985454543980621824").sendMessageEmbeds(ticketClose.build()).queue();
+                    e.getGuild().getTextChannelById("985454543980621824").sendMessageEmbeds(ticketClose.build()).queue(); //put logs channel here
 
 
                     Thread.sleep(500);
@@ -98,7 +98,7 @@ public class closeAndLogs extends ListenerAdapter {
 
                     }catch (Exception exception){
                         System.out.println("Unable to delete file");
-                        System.err.println(Arrays.toString(exception.getStackTrace()));
+                        exception.printStackTrace();
                     }
 
 

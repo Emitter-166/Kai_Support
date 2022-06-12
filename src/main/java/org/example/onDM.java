@@ -25,14 +25,14 @@ JDA jda = null;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e){
-        guild = jda.getGuildById("985453636685533185");
+        guild = jda.getGuildById("985453636685533185"); //put the server here
 
         if(e.getChannel().getType() != ChannelType.PRIVATE) return;
         if(e.getMessage().getAuthor().isBot()) return;
 
         //checking if the user has pervious thread
         User author = e.getMessage().getAuthor();
-        Category modMailCategory = guild.getCategoryById("985454471435927572");
+        Category modMailCategory = guild.getCategoryById("985454471435927572"); //put modmail category here
         StringBuilder authorName = new StringBuilder();
         Arrays.stream(author.getName().split(" ")).forEach(args -> authorName.append(args + "-"));
 
@@ -128,7 +128,7 @@ JDA jda = null;
             ticketOpenedEmbed.setDescription("**" + e.getMessage().getContentRaw()+ "**");
             ticketOpenedEmbed.setFooter(String.format("%s#%s | %s • Today at %s", author.getName(), author.getDiscriminator(), author.getId(),Time, author.getEffectiveAvatarUrl()));
 
-            guild.getTextChannelById("985454543980621824").sendMessageEmbeds(ticketOpenedEmbed.build()).queue();
+            guild.getTextChannelById("985454543980621824").sendMessageEmbeds(ticketOpenedEmbed.build()).queue(); //put logs channel here
 
         }
 
