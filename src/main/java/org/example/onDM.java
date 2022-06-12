@@ -44,7 +44,6 @@ JDA jda = null;
         }catch (IndexOutOfBoundsException exception) {}
         
         if(!hasThread){
-            System.out.println(ChannelName);
             modMailCategory.createTextChannel(ChannelName)
                     .clearPermissionOverrides()
                     .setTopic("Kai Support Modmail")
