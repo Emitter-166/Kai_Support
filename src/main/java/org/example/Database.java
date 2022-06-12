@@ -12,7 +12,6 @@ import java.util.NoSuchElementException;
 
 public class Database extends ListenerAdapter {
     static MongoCollection activeThreads;
-    MongoCollection modLogs;
 
 
     @Override
@@ -21,11 +20,7 @@ public class Database extends ListenerAdapter {
         MongoClientURI clientURI = new MongoClientURI("mongodb+srv://Emitter:the2horned@cluster0.o4mfx.mongodb.net/?retryWrites=true&w=majority");
         MongoClient mongoClient = new MongoClient(clientURI);
         MongoDatabase database = mongoClient.getDatabase("ModMail");
-        System.out.println(database.getName());
         activeThreads = database.getCollection("Active-Threads");
-        System.out.println(activeThreads);
-        modLogs = database.getCollection("ModLogs");
-
     }
 
     /*
@@ -58,10 +53,6 @@ public class Database extends ListenerAdapter {
         }
     }
 
-    public static void addLogs(String message){
-        //this method is to add logs to the database
-
-    }
 
     public static int amountOfPastThread(String userId){
         return  (Integer) ((Document) activeThreads.find(new Document("userId", userId)).cursor().next()).get("amount");

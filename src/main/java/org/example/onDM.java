@@ -25,14 +25,14 @@ JDA jda = null;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e){
-        guild = jda.getGuildById("818373020816637952");
+        guild = jda.getGuildById("985453636685533185");
 
         if(e.getChannel().getType() != ChannelType.PRIVATE) return;
         if(e.getMessage().getAuthor().isBot()) return;
 
         //checking if the user has pervious thread
         User author = e.getMessage().getAuthor();
-        Category modMailCategory = guild.getCategoryById("961736325076250704");
+        Category modMailCategory = guild.getCategoryById("985454471435927572");
         StringBuilder authorName = new StringBuilder();
         Arrays.stream(author.getName().split(" ")).forEach(args -> authorName.append(args + "-"));
 
@@ -70,13 +70,10 @@ JDA jda = null;
             Database.adduser(author.getId());
             Object timeJoined;
             Member member = guild.retrieveMember(author).complete();
-            try{
+
                 System.out.println(author.getId());
                 timeJoined = member.getTimeJoined();
 
-            }catch(NullPointerException exception){
-                timeJoined = "owner of this server";
-            }
 
             //info about the user to send to the mod
             EmbedBuilder aboutBuilder = new EmbedBuilder();
@@ -114,17 +111,25 @@ JDA jda = null;
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
-
+            String Time;
             try {
-                StringBuilder timeAndDate = new StringBuilder();
                 String date = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[0];
-                String Time = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[1];
+                Time = e.getMessage().getTimeCreated().toString().replace('T', ' ').replace('Z', ' ').split(" ")[1];
 
                 log.write(String.format("User: %s(%s), Date: %s, Time created: %s UTC", author.getName() + "#" + author.getDiscriminator(), author.getId(), date, Time));
                 log.close();
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
+
+            //sending ticket open message
+            EmbedBuilder ticketOpenedEmbed = new EmbedBuilder();
+            ticketOpenedEmbed.setColor(Color.green);
+            ticketOpenedEmbed.setTitle(String.format("New ticket by: %s#%s(%s)", author.getName(), author.getDiscriminator(), author.getId()));
+            ticketOpenedEmbed.setDescription("**" + e.getMessage().getContentRaw()+ "**");
+            ticketOpenedEmbed.setFooter(String.format("%s#%s | %s • Today at %s", author.getName(), author.getDiscriminator(), author.getId(),Time, author.getEffectiveAvatarUrl()));
+
+            guild.getTextChannelById("985454543980621824").sendMessageEmbeds(ticketOpenedEmbed.build()).queue();
 
         }
 

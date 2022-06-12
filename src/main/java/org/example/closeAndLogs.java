@@ -1,14 +1,17 @@
 package org.example;
 
+import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.User;
 import net.dv8tion.jda.api.events.message.MessageReceivedEvent;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 
+import java.awt.*;
 import java.io.File;
 import java.io.FileWriter;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 
 public class closeAndLogs extends ListenerAdapter {
 
@@ -35,10 +38,6 @@ public class closeAndLogs extends ListenerAdapter {
                     }
 
 
-
-
-
-
                     StringBuilder reply = new StringBuilder();
                     for(int i = 1; i < args.length ; i++){
                         reply.append(args[i] + " ");
@@ -62,23 +61,42 @@ public class closeAndLogs extends ListenerAdapter {
                     log.close();
 
 
-                    //deleting the log
+
+
                     String path = String.format("%s.txt", e.getTextChannel().getName());
                     Path xpath = Paths.get(path);
-                    System.out.println(xpath);
 
+                    //sending the logfile
                     File file = new File(path);
-                    e.getGuild().getTextChannelById("980322609822576640").sendFile(file)
+                    e.getGuild().getTextChannelById("985454543980621824").sendFile(file)
                             .queue();
 
-                    Thread.sleep(250);
+
+                    //sending ticket closed message
+                    EmbedBuilder ticketClose = new EmbedBuilder();
+                    ticketClose.setTitle("Ticket closed");
+                    if(args.length != 1){
+                        ticketClose.setDescription(String.format("**Ticket closed with the reason: %s, mod responsible: %s#%s(%s)** \n" +
+                                "`Logs above this message ^`", reply, author.getName(), author.getDiscriminator(), author.getId()));
+                    }else{
+                        ticketClose.setDescription(String.format("**Ticket closed, mod responsible: %s#%s(%s)** \n" +
+                                "`Logs above this message ^`", author.getName(), author.getDiscriminator(), author.getId()));
+                    }
+
+                    ticketClose.setColor(Color.RED);
+                    ticketClose.setAuthor(author.getName() + " closed a ticket", author.getEffectiveAvatarUrl());
+
+                    e.getGuild().getTextChannelById("985454543980621824").sendMessageEmbeds(ticketClose.build()).queue();
+
+
+                    Thread.sleep(500);
 
                     try{
                         Files.delete(xpath);
 
                     }catch (Exception exception){
                         System.out.println("Unable to delete file");
-                        System.err.println(exception.getStackTrace());
+                        System.err.println(Arrays.toString(exception.getStackTrace()));
                     }
 
 
