@@ -25,18 +25,18 @@ JDA jda = null;
 
     @Override
     public void onMessageReceived(MessageReceivedEvent e){
-        guild = jda.getGuildById("859736561830592522"); //put the server here
+        guild = jda.getGuildById("985453636685533185"); //put the server here
 
         if(e.getChannel().getType() != ChannelType.PRIVATE) return;
         if(e.getMessage().getAuthor().isBot()) return;
 
         //checking if the user has pervious thread
         User author = e.getMessage().getAuthor();
-        Category modMailCategory = guild.getCategoryById("984355709313503262"); //put modmail category here
+        Category modMailCategory = guild.getCategoryById("985454471435927572"); //put modmail category here
         StringBuilder authorName = new StringBuilder();
         Arrays.stream(author.getName().split(" ")).forEach(args -> authorName.append(args + "-"));
 
-        String ChannelName = authorName + "Id-" + e.getMessage().getAuthor().getId();
+        String ChannelName = (authorName + "Id-" + e.getMessage().getAuthor().getId()).toLowerCase();
 
         boolean hasThread = false;
         try{
@@ -80,7 +80,7 @@ JDA jda = null;
             try{
                 assert timeJoined instanceof OffsetDateTime;
                 aboutBuilder.addField("", String.format("%s was created at **%s**, joined at **%s** with **%d** past threads.", author.getAsMention(),
-                        author.getTimeCreated().getDayOfMonth() + "/" + author.getTimeCreated().getMonthValue()+ "/" + ((OffsetDateTime)timeJoined).getYear(),
+                        author.getTimeCreated().getDayOfMonth() + "/" + author.getTimeCreated().getMonthValue()+ "/" + (author.getTimeCreated().getYear()),
                         ((OffsetDateTime)timeJoined).getDayOfMonth() + "/" + ((OffsetDateTime)timeJoined).getMonthValue() + "/" + ((OffsetDateTime)timeJoined).getYear(),
                         Database.amountOfPastThread(author.getId())) , true);
 
@@ -98,13 +98,13 @@ JDA jda = null;
 
 
 
-            TextChannel channel = guild.getTextChannelsByName(ChannelName, true).get(0);
+            TextChannel channel = guild.getTextChannelsByName(ChannelName, false).get(0);
             channel.sendMessage("@here").queue();
             channel.sendMessageEmbeds(aboutBuilder.build()).queue();
 
             //mod log file
             try {
-                log = new FileWriter(String.format("%s.txt", ChannelName.toLowerCase()));
+                log = new FileWriter(String.format("%s.txt", ChannelName));
             } catch (IOException ex) {
                 throw new RuntimeException(ex);
             }
@@ -126,13 +126,13 @@ JDA jda = null;
             ticketOpenedEmbed.setDescription("**" + e.getMessage().getContentRaw()+ "**");
             ticketOpenedEmbed.setFooter(String.format("%s#%s | %s • Today at %s", author.getName(), author.getDiscriminator(), author.getId(),Time, author.getEffectiveAvatarUrl()));
 
-            guild.getTextChannelById("984355710668243014").sendMessageEmbeds(ticketOpenedEmbed.build()).queue(); //put logs channel here
+            guild.getTextChannelById("985454543980621824").sendMessageEmbeds(ticketOpenedEmbed.build()).queue(); //put logs channel here
 
         }
 
 
         //this is the part where the message from client will be redirected to mods
-        TextChannel channel = guild.getTextChannelsByName(ChannelName, true).get(0);
+        TextChannel channel = guild.getTextChannelsByName(ChannelName, false).get(0);
 
         EmbedBuilder builder = new EmbedBuilder();
         Calendar calendar = new GregorianCalendar();
